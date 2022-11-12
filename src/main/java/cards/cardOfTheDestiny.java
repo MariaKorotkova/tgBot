@@ -1,6 +1,9 @@
 package cards;
 
+import random.random;
+
 import java.io.*;
+import java.util.Properties;
 
 /**
  * Класс Карты Судьбы
@@ -8,11 +11,11 @@ import java.io.*;
 public class cardOfTheDestiny implements anotherCards {
     /**
      * Функция получения номера
+     *
      * @param date дата рождения
      * @return возвращает номер, расчитанный по дате рождения
      */
     public int numberOfTheDestiny(String date) {
-        //сделать проверку на правильность ввода
         String[] dateOfBirth = date.split("");
         if (date.length() == 8) {
             int sum = 0;
@@ -35,34 +38,23 @@ public class cardOfTheDestiny implements anotherCards {
 
     /**
      * Функция получения одной из Карт Судьбы
+     *
      * @param num номер, расчитанный по дате рождения
      * @return возвращает карту, соответствующую номеру
      */
-    public StringBuilder cardsOfTheDestiny(int num) {
-        try (FileReader reader = new FileReader("destiny.txt")) {
-            StringBuilder sb = new StringBuilder();
-            int character;
-            while ((character = reader.read()) != -1) {
-                char ch = (char) character;
-                sb.append(ch);
-            }
-            StringBuilder result = new StringBuilder();
-            for (int j = 0; j < sb.length() - 2; j++) {
-                boolean prov1 = Character.isDigit(sb.charAt(j));
-                boolean prov2 = Character.isDigit(sb.charAt(j + 1));
-                if (prov1 && prov2 && (Integer.parseInt(sb.substring(j, j + 1)) ==
-                        (num / 10)) && (Integer.parseInt(sb.substring(j + 1, j + 2)) ==
-                        (num % 10))) {
-                    for (int p = j + 2; p < sb.length(); p++) {
-                        if (sb.charAt(p) == '*') break;
-                        result.append(sb.charAt(p));
-                    }
-                }
-            }
-            return result;
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+    public String cardsOfTheDestiny(int num) {
+        Properties property = new Properties();
+
+        try {
+            File file = new File("C:\\Users\\79091\\Downloads\\tgBot-main\\" +
+                    "tgBot-main\\src\\main\\resources\\app.properties");
+            property.load(new FileReader(file));
+
+            String prediction = property.getProperty("prediction" + Integer.toString(num));
+            return prediction;
+        } catch (IOException e) {
+            System.err.println("Ошибка!");
         }
-        return new StringBuilder();
+        return new String();
     }
 }

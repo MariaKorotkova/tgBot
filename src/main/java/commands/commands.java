@@ -13,8 +13,10 @@ import java.util.Scanner;
 
 import org.json.simple.JSONObject;
 
-/** Класс команд */
-public class commands implements commandsInt {
+/**
+ * Класс команд
+ */
+public class commands {
     /**
      * Функция выбора команды
      *
@@ -30,16 +32,12 @@ public class commands implements commandsInt {
                         /possibility: Предсказание вероятности наступления события
                         """);
                 break;
-            //или считать информацию из файла
             case "/cardOfTheDay":
                 cards j = new cardOfTheDay();
                 System.out.println("Ваша карта дня:");
                 System.out.println(j.sayCards());
                 break;
             case "/cardOfTheDestiny":
-                //System.out.println("Введите дату рождения в формате 01011999:");
-                //Scanner in = new Scanner(System.in);
-                //String date = in.nextLine();
                 Object obj = new JSONParser().parse(new FileReader("user.json"));
                 JSONObject jo = (JSONObject) obj;
                 String date = (String) jo.get("Date");

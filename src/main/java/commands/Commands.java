@@ -1,9 +1,9 @@
 package commands;
 
-import cards.anotherCards;
-import cards.cards;
-import cards.cardOfTheDestiny;
-import cards.cardOfTheDay;
+import cards.AnotherCards;
+import cards.Cards;
+import cards.CardOfTheDestiny;
+import cards.CardOfTheDay;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import random.random;
@@ -16,7 +16,7 @@ import org.json.simple.JSONObject;
 /**
  * Класс команд
  */
-public class commands {
+public class Commands {
     /**
      * Функция выбора команды
      *
@@ -27,27 +27,32 @@ public class commands {
             case "/help":
                 System.out.println("""
                         /newUser: Создание пользователя
-                        /cardOfTheDay: Карта дня - карта предсказание из старших арканов
-                        /cardOfTheDestiny: Карта судьбы рассчитывается по дате рождения
+                        /CardOfTheDay: Карта дня - карта предсказание из старших арканов
+                        /CardOfTheDestiny: Карта судьбы рассчитывается по дате рождения
                         /possibility: Предсказание вероятности наступления события
                         """);
                 break;
-            case "/cardOfTheDay":
-                cards j = new cardOfTheDay();
+            case "/CardOfTheDay":
+                Cards j = new CardOfTheDay();
                 System.out.println("Ваша карта дня:");
                 System.out.println(j.sayCards());
                 break;
-            case "/cardOfTheDestiny":
-                Object obj = new JSONParser().parse(new FileReader("user.json"));
-                JSONObject jo = (JSONObject) obj;
-                String date = (String) jo.get("Date");
-                System.out.println("date: " + date);
-                anotherCards p = new cardOfTheDestiny();
-                System.out.println(p.cardsOfTheDestiny(p.numberOfTheDestiny(date)));
+            case "/CardOfTheDestiny":
+                File file = new File("user.json");
+                if (file.length() == 0){
+                    System.out.println("Создайте пользователя: /newUser");
+                }
+                else {
+                    Object obj = new JSONParser().parse(new FileReader("user.json"));
+                    JSONObject jo = (JSONObject) obj;
+                    String date = (String) jo.get("Date");
+                    System.out.println("date: " + date);
+                    AnotherCards p = new CardOfTheDestiny();
+                    System.out.println(p.cardsOfTheDestiny(p.numberOfTheDestiny(date)));
+                }
                 break;
             case "/possibility":
                 System.out.println("Введите ваш вопрос:");
-                //добавить блок try?
                 Scanner question = new Scanner(System.in);
                 String str = question.nextLine();
                 random i = new random();

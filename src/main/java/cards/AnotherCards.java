@@ -1,6 +1,6 @@
 package cards;
 
-public interface anotherCards {
+public interface AnotherCards {
     int numberOfTheDestiny(String date);
 
     String cardsOfTheDestiny(int num);

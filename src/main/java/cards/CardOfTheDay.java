@@ -8,7 +8,7 @@ import java.util.Properties;
 /**
  * Класс Карта дня
  */
-public class cardOfTheDay implements cards {
+public class CardOfTheDay implements Cards {
     /**
      * Функция получения одной из Карт Дня
      *
@@ -19,8 +19,7 @@ public class cardOfTheDay implements cards {
         Properties property = new Properties();
 
         try {
-            File file = new File("C:\\Users\\79091\\Downloads\\tgBot-main\\" +
-                    "tgBot-main\\src\\main\\resources\\ar_properties.properties");
+            File file = new File("src\\main\\resources\\app.properties");
             property.load(new FileReader(file));
 
             random i = new random();

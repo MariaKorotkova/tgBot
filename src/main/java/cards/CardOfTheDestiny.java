@@ -1,14 +1,12 @@
 package cards;
 
-import random.random;
-
 import java.io.*;
 import java.util.Properties;
 
 /**
  * Класс Карты Судьбы
  */
-public class cardOfTheDestiny implements anotherCards {
+public class CardOfTheDestiny implements AnotherCards {
     /**
      * Функция получения номера
      *
@@ -46,8 +44,7 @@ public class cardOfTheDestiny implements anotherCards {
         Properties property = new Properties();
 
         try {
-            File file = new File("C:\\Users\\79091\\Downloads\\tgBot-main\\" +
-                    "tgBot-main\\src\\main\\resources\\app.properties");
+            File file = new File("src\\main\\resources\\app.properties");
             property.load(new FileReader(file));
 
             String prediction = property.getProperty("prediction" + Integer.toString(num));

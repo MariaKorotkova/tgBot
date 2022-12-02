@@ -1,27 +1,21 @@
-import commands.Commands;
-import org.json.simple.parser.ParseException;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.Map;
 
 /**
  * Основной класс
  */
-class Main {
-    /**
-     * Функция представляет выбор основных функций бота
-     *
-     * @param argv входной запрос
-     */
-    public static void main(String[] argv) throws IOException, ParseException {
-        System.out.println("Для создания пользователя выберете /newUser");
-        while (true) {
-            System.out.println("Введите одну из команд: /help, /newUser, /CardOfTheDestiny, /CardOfTheDay, /possibility");
-            Scanner in = new Scanner(System.in);
-            String command = in.nextLine();
-            Commands c = new Commands();
-            c.command(command);
+public class Main {
+    static final Map<String, String> getenv = System.getenv();
+
+    public static void main(String[] args) {
+        try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            botsApi.registerBot(new TelegramBot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
-        //цикл, который бесконечно будет запрашивать команду
     }
 }

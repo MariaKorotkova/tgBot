@@ -1,6 +1,6 @@
 package cards;
 
-import random.random;
+import random.Random;
 
 import java.io.*;
 import java.util.Properties;
@@ -8,7 +8,7 @@ import java.util.Properties;
 /**
  * Класс Карта дня
  */
-public class CardOfTheDay implements Cards {
+public class CardOfTheDay implements CardsDay {
     /**
      * Функция получения одной из Карт Дня
      *
@@ -19,16 +19,15 @@ public class CardOfTheDay implements Cards {
         Properties property = new Properties();
 
         try {
-            File file = new File("src\\main\\resources\\app.properties");
+            File file = new File("src\\main\\resources\\CardsOfTheDay.properties");
             property.load(new FileReader(file));
 
-            random i = new random();
+            Random i = new Random();
             int number = i.randomNumber();
-            String rawPrediction = property.getProperty("prediction" + Integer.toString(number));
-            return rawPrediction;
+            return property.getProperty("prediction" + number);
         } catch (IOException e) {
             System.err.println("Ошибка!");
         }
-        return new String();
+        return "";
     }
 }

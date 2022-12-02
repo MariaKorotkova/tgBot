@@ -1,7 +1,8 @@
 package random;
 
-public interface randomFunction {
+public interface RandomFunction {
     String randomFunc();
+
     int randomNumber();
 }
 

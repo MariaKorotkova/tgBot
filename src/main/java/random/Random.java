@@ -1,12 +1,9 @@
 package random;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Класс рандом
  */
-public class random implements randomFunction {
+public class Random implements RandomFunction {
     /**
      * Функция расчёта вероятности
      *
@@ -25,7 +22,6 @@ public class random implements randomFunction {
      */
 
     public int randomNumber() {
-        int j = (int) (1 + Math.random() * 21);
-        return j;
+        return (int) (1 + Math.random() * 21);
     }
 }

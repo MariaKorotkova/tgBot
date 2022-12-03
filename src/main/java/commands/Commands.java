@@ -7,6 +7,7 @@ import cards.CardOfTheDay;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import random.Random;
+import horoscope.HoroscopeOfTheDay;
 
 import java.io.*;
 
@@ -90,7 +91,8 @@ public class Commands {
                         return new String[]{i.randomFunc(), " "};
                     }
                     case "getZodiac" -> {
-                        return new String[]{"Тута будет гороскоп", " "};
+                        HoroscopeOfTheDay i = new HoroscopeOfTheDay();
+                        return new String[]{i.horoscope(name), " "};
                     }
                 }
                 return new String[]{"Неправильный запрос!", " "};

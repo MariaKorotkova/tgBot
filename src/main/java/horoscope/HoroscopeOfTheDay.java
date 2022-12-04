@@ -2,10 +2,8 @@ package horoscope;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 public class HoroscopeOfTheDay {
@@ -31,8 +29,7 @@ public class HoroscopeOfTheDay {
                     .referrer("http://www.google.com")
                     .get();
             Elements div = document.select("div.horoscope-7days__content_text");
-            String prediction = div.text();
-            return prediction;
+            return div.text();
         } catch (Exception e) {
             return "Введите знак корректно!";
         }

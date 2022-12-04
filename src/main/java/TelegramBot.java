@@ -1,4 +1,7 @@
 import commands.Commands;
+import keyboard.Horo;
+import keyboard.MakeKeyboard;
+import keyboard.Taro;
 import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -30,24 +33,95 @@ public final class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Long chatId = update.getMessage().getChatId();
-        SendMessage message = new SendMessage();
-        String command = update.getMessage().getText();
-        Commands c = new Commands();
-        String text = "";
-        try {
-            String[] answer = c.command(command, status);
-            text = answer[0];
-            status = answer[1];
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-        message.setChatId(chatId);
-        message.setText(text);
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+        if (update.hasMessage()) {
+            Long chatId = update.getMessage().getChatId();
+            SendMessage message = new SendMessage();
+            String command = update.getMessage().getText();
+            Commands c = new Commands();
+            String text = "";
+            switch (command) {
+                case "/keyboard" -> {
+                    MakeKeyboard.createKeyboard(chatId);
+                    try {
+                        execute(MakeKeyboard.message);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case "Гороскоп" -> {
+                    Horo.createHoro(chatId);
+                    try {
+                        execute(MakeKeyboard.message);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case "Карты Таро" -> {
+                    Taro.createTaro(chatId);
+                    try {
+                        execute(MakeKeyboard.message);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                default -> {
+                    try {
+                        String[] answer = c.command(command, status);
+                        text = answer[0];
+                        status = answer[1];
+                    } catch (IOException | ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    message.setChatId(chatId);
+                    message.setText(text);
+                    try {
+                        execute(message);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        } else if (update.hasCallbackQuery()) {
+            Commands c = new Commands();
+            String text;
+            SendMessage msq = new SendMessage();
+            SendMessage message = new SendMessage();
+            Long chatId = update.getCallbackQuery().getMessage().getChatId();
+            msq.setText(update.getCallbackQuery().getData());
+            msq.setChatId(update.getCallbackQuery().getMessage().getChatId());
+
+            String call = msq.getText();
+            String com = "";
+            switch (call) {
+                case "Гороскоп на день":
+                    com = "/horoscope_of_the_day";
+                    break;
+                case "Карта дня":
+                    com = "/card_of_the_day";
+                    break;
+                case "Карта судьбы":
+                    com = "/card_of_the_destiny";
+                    break;
+                case "Предсказание":
+                    com = "/possibility";
+                    break;
+            }
+            try {
+                String[] answer = c.command(com, status);
+                text = answer[0];
+                status = answer[1];
+            } catch (IOException | ParseException e) {
+                throw new RuntimeException(e);
+            }
+            message.setChatId(chatId);
+            message.setText(text);
+            try {
+                execute(message);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }
+

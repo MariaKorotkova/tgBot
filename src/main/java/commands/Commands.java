@@ -4,6 +4,7 @@ import cards.CardsDestiny;
 import cards.CardsDay;
 import cards.CardOfTheDestiny;
 import cards.CardOfTheDay;
+import keyboard.MakeKeyboard;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import random.Random;
@@ -25,21 +26,33 @@ public class Commands {
     public String[] command(String name, String status) throws IOException, ParseException {
 
         switch (name) {
+            case "/start":
+                return new String[]{"""
+                        Привет, я GadalkaBot!
+                        Включи клавиатуру, чтобы было удобней общаться /keyboard
+                        Нажми /help , чтобы посмотреть,что я могу делать
+                        """, " "};
             case "/help":
                 return new String[]{"""
-                        /newUser:  Создание пользователя
-                        /cardOfTheDay:  Карта дня - карта предсказание на день
-                        /cardOfTheDestiny:  Карта судьбы по дате рождения
-                        /horoscopeOfTheDay:  Гороскоп на день
+                        /new_user:  Создание пользователя
+                        /keyboard:  Создание клавиатуры
+                        
+                        Карты Таро:
+                        /card_of_the_day:  Карта дня - карта предсказание на день
+                        /card_of_the_destiny:  Карта судьбы по дате рождения
+                        
+                        Гороскоп:
+                        /horoscope_of_the_day:  Гороскоп на день
+                        
                         /possibility:  Предсказание вероятности наступления события
                         """, " "};
-            case "/cardOfTheDay":
+            case "/card_of_the_day":
                 CardsDay j = new CardOfTheDay();
                 return new String[]{j.sayCards(), " "};
-            case "/cardOfTheDestiny":
-                File file = new File("user.json");
-                if (file.length() == 0) {
-                    return new String[]{"Создайте пользователя: /newUser", " "};
+            case "/card_of_the_destiny":
+                File file1 = new File("user.json");
+                if (file1.length() == 0) {
+                    return new String[]{"Создайте пользователя: /new_user", " "};
                 } else {
                     Object obj = new JSONParser().parse(new FileReader("date.json"));
                     JSONObject jo = (JSONObject) obj;
@@ -49,9 +62,9 @@ public class Commands {
                 }
             case "/possibility":
                 return new String[]{"Введите ваш вопрос:", "getPossibility"};
-            case "/newUser":
+            case "/new_user":
                 return new String[]{"Введите имя:", "getNameNewUser"};
-            case "/horoscopeOfTheDay":
+            case "/horoscope_of_the_day":
                 return new String[]{"Введите знак зодиака", "getZodiac"};
             default:
                 switch (status) {

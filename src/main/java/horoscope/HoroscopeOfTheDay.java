@@ -29,7 +29,8 @@ public class HoroscopeOfTheDay {
                     .referrer("http://www.google.com")
                     .get();
             Elements div = document.select("div.horoscope-7days__content_text");
-            return div.text();
+            String prediction = div.text();
+            return prediction;
         } catch (Exception e) {
             return "Введите знак корректно!";
         }

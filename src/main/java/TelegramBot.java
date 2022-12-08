@@ -1,3 +1,4 @@
+import cards.ParserForCards;
 import commands.Commands;
 import keyboard.Horo;
 import keyboard.MakeKeyboard;
@@ -5,6 +6,8 @@ import keyboard.Taro;
 import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -14,6 +17,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
     String status = " ";
+    String photoName = " ";
 
     public TelegramBot(String botName, String botToken) {
         super();
@@ -29,6 +33,18 @@ public final class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return BOT_TOKEN;
+    }
+
+    public void sendPhoto(String filename, Long chatId) {
+        java.io.File file = new java.io.File("photo", filename + ".jpg");
+        InputFile f = new InputFile(file);
+        SendPhoto sendPhoto = new SendPhoto(chatId.toString(),f);
+        try {
+            execute(sendPhoto);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+        file.delete();
     }
 
     @Override
@@ -106,19 +122,40 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     com = "/possibility";
                     break;
             }
+            String[] answer = new String[0];
             try {
-                String[] answer = c.command(com, status);
-                text = answer[0];
-                status = answer[1];
-            } catch (IOException | ParseException e) {
+                answer = c.command(com, status);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-            message.setChatId(chatId);
-            message.setText(text);
-            try {
-                execute(message);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
+            text = answer[0];
+            status = answer[1];
+            if (answer.length != 2){
+                photoName = answer[2];
+                System.out.println(photoName);
+                try {
+                    ParserForCards.ParseImg(photoName);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                sendPhoto(photoName, chatId);
+                message.setChatId(chatId);
+                message.setText(text);
+                try {
+                    execute(message);
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                message.setChatId(chatId);
+                message.setText(text);
+                try {
+                    execute(message);
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
         }

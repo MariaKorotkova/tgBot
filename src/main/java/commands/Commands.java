@@ -48,7 +48,8 @@ public class Commands {
                         """, " "};
             case "/card_of_the_day":
                 CardsDay j = new CardOfTheDay();
-                return new String[]{j.sayCards(), " "};
+                String[] answer = j.sayCards();
+                return new String[]{answer[0], " ", answer[1]};
             case "/card_of_the_destiny":
                 File file1 = new File("user.json");
                 if (file1.length() == 0) {

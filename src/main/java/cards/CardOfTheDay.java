@@ -19,7 +19,7 @@ public class CardOfTheDay implements CardsDay {
      * @return возвращает описание одной из карт
      */
     @Override
-    public String sayCards() {
+    public String[] sayCards() {
         Properties property = new Properties();
 
         try {
@@ -39,10 +39,11 @@ public class CardOfTheDay implements CardsDay {
             Elements mining = document.select("div.col-md-8.col-md-push-4 p");
             String cardName = card.get(0).text();
             String predicton = cardName.substring(0, cardName.length() - 32) + "\n\n" + mining.text();
-            return predicton;
+            System.out.println(number);
+            return new String[]{predicton, name};
         } catch (IOException e) {
             System.err.println("Ошибка!");
         }
-        return "";
+        return new String[]{};
     }
 }

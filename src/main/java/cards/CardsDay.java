@@ -1,5 +1,5 @@
 package cards;
 
 public interface CardsDay {
-    String sayCards();
+    String[] sayCards();
 }

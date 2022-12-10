@@ -8,8 +8,15 @@ import java.util.List;
 
 import static keyboard.Keyboard.message;
 
+/**
+ * Класс Таро
+ */
 public class Taro {
-
+    /**
+     * Функция создания кнопок
+     *
+     * @param chat_id идентификатор чата
+     */
     public static void createTaro(long chat_id) {
         message.setChatId(chat_id);
         message.setText("Карты Таро");

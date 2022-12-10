@@ -6,8 +6,15 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс Создание Клавиатуры
+ */
 public class MakeKeyboard extends Keyboard {
-
+    /**
+     * Функция создания клавиатуры
+     *
+     * @param chat_id идентификатор чата
+     */
     public static void createKeyboard(long chat_id) {
 
         message.setChatId(chat_id);

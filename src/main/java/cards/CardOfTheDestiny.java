@@ -42,16 +42,22 @@ public class CardOfTheDestiny implements CardsDestiny {
      * @param num номер, посчитанный по дате рождения
      * @return возвращает карту, соответствующую номеру
      */
-    public String cardsOfTheDestiny(int num) {
+    public String[] cardsOfTheDestiny(int num) {
         Properties property = new Properties();
+        Properties cards = new Properties();
 
         try {
             File file = new File("src\\main\\resources\\NameOfCards.properties");
             property.load(new FileReader(file));
+
+            File file2 = new File("src\\main\\resources\\NameOfCards2.properties");
+            cards.load(new FileReader(file2));
+
             String name = property.getProperty("prediction" + num);
+            String nameOfCard = property.getProperty("prediction" + num);
 
             Document document = Jsoup.connect("https://alma-taro.ru/znachenie-taro/"
-                            + name + "-znachenie/")
+                            + nameOfCard + "-znachenie/")
                     .userAgent("Chrome/4.0.249.0 Safari/532.5")
                     .referrer("http://www.google.com")
                     .get();
@@ -59,10 +65,10 @@ public class CardOfTheDestiny implements CardsDestiny {
             Elements mining = document.select("div.col-md-8.col-md-push-4 p");
             String cardName = card.get(0).text();
             String predicton = cardName.substring(0, cardName.length() - 40) + "\n\n" + mining.get(0).text();
-            return predicton;
+            return new String[]{predicton, name};
         } catch (IOException e) {
             System.err.println("Ошибка!");
         }
-        return "";
+        return new String[]{};
     }
 }

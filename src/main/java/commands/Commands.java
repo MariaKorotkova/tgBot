@@ -59,7 +59,8 @@ public class Commands {
                     JSONObject jo = (JSONObject) obj;
                     String date = (String) jo.get("Date");
                     CardsDestiny p = new CardOfTheDestiny();
-                    return new String[]{p.cardsOfTheDestiny(p.numberOfTheDestiny(date)), " "};
+                    String[] result = p.cardsOfTheDestiny(p.numberOfTheDestiny(date));
+                    return new String[]{result[0], " ", result[1]};
                 }
             case "/possibility":
                 return new String[]{"Введите ваш вопрос:", "getPossibility"};

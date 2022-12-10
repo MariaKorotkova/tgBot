@@ -6,7 +6,15 @@ import org.jsoup.select.Elements;
 
 import java.util.HashMap;
 
+/**
+ * Класс гороскоп дня
+ */
 public class HoroscopeOfTheDay {
+    /**
+     * Функция получения гороскопа
+     *
+     * @param name знак зодиака
+     */
     public String horoscope(String name) {
         HashMap<String, String> signs = new HashMap<String, String>();
         signs.put("Овен", "aries");

@@ -6,7 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Класс Парсер карт
+ */
 public class ParserForCards {
+    /**
+     * Функция загрузки карт
+     *
+     * @param href название карты
+     */
     public static void ParseImg(String href) throws IOException {
         String Url = "https://astrohelper.ru/images/gadaniya/arkany/" + href + ".jpg";
         String fileDownload = "photo/" + href + ".jpg";

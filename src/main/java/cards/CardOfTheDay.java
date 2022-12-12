@@ -33,7 +33,7 @@ public class CardOfTheDay implements CardsDay {
             Random i = new Random();
             int number = i.randomNumber();
             String name = property.getProperty("prediction" + number);
-            String nameOfCard = property.getProperty("prediction" + number);
+            String nameOfCard = cards.getProperty("prediction" + number);
 
             Document document = Jsoup.connect("https://alma-taro.ru/taro-day/"
                             + nameOfCard + "-znachenie-karta-dnya/")
@@ -46,7 +46,7 @@ public class CardOfTheDay implements CardsDay {
             String predicton = cardName.substring(0, cardName.length() - 32) + "\n\n" + mining.text();
             return new String[]{predicton, name};
         } catch (IOException e) {
-            System.err.println("Ошибка!");
+            System.err.println(e);
         }
         return new String[]{};
     }

@@ -54,7 +54,7 @@ public class CardOfTheDestiny implements CardsDestiny {
             cards.load(new FileReader(file2));
 
             String name = property.getProperty("prediction" + num);
-            String nameOfCard = property.getProperty("prediction" + num);
+            String nameOfCard = cards.getProperty("prediction" + num);
 
             Document document = Jsoup.connect("https://alma-taro.ru/znachenie-taro/"
                             + nameOfCard + "-znachenie/")
@@ -67,7 +67,7 @@ public class CardOfTheDestiny implements CardsDestiny {
             String predicton = cardName.substring(0, cardName.length() - 40) + "\n\n" + mining.get(0).text();
             return new String[]{predicton, name};
         } catch (IOException e) {
-            System.err.println("Ошибка!");
+            System.err.println(e);
         }
         return new String[]{};
     }

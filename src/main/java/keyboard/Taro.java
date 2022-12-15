@@ -1,5 +1,6 @@
 package keyboard;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -19,7 +20,7 @@ public class Taro {
      */
     public static void createTaro(long chat_id) {
         message.setChatId(chat_id);
-        message.setText("Карты Таро");
+        message.setText(EmojiParser.parseToUnicode(":sparkles:Карты Таро:sparkles:"));
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> button = new ArrayList<>();
@@ -28,11 +29,11 @@ public class Taro {
         List<InlineKeyboardButton> row3 = new ArrayList<>();
 
 
-        row2.add(InlineKeyboardButton.builder().text("Карта дня").callbackData("Карта дня").build());
+        row2.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Карта дня:crystal_ball:")).callbackData("Карта дня").build());
         button.add(row2);
-        row2.add(InlineKeyboardButton.builder().text("Карта судьбы").callbackData("Карта судьбы").build());
+        row2.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Карта судьбы:crystal_ball:")).callbackData("Карта судьбы").build());
         button.add(row3);
-        row1.add(InlineKeyboardButton.builder().text("Предсказание").callbackData("Предсказание").build());
+        row1.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Предсказание:crystal_ball:")).callbackData("Предсказание").build());
         button.add(row1);
 
         markup.setKeyboard(button);

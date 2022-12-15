@@ -4,11 +4,11 @@ import cards.CardsDestiny;
 import cards.CardsDay;
 import cards.CardOfTheDestiny;
 import cards.CardOfTheDay;
-import keyboard.MakeKeyboard;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import random.Random;
 import horoscope.HoroscopeOfTheDay;
+import horoscope.Compatibility;
 
 import java.io.*;
 
@@ -64,6 +64,9 @@ public class Commands {
                 }
             case "/possibility":
                 return new String[]{"Введите ваш вопрос:", "getPossibility"};
+            case "/compatibility":
+                return new String[]{"Введите Ваши знаки зодиака и пол в формате " +
+                        "\nОвен ж Стрелец м", "getSigns"};
             case "/new_user":
                 return new String[]{"Введите имя:", "getNameNewUser"};
             case "/horoscope_of_the_day":
@@ -108,6 +111,10 @@ public class Commands {
                     case "getZodiac" -> {
                         HoroscopeOfTheDay i = new HoroscopeOfTheDay();
                         return new String[]{i.horoscope(name), " "};
+                    }
+                    case "getSigns" -> {
+                        Compatibility i = new Compatibility();
+                        return new String[]{i.compatibilityOfSigns(name), " "};
                     }
                 }
                 return new String[]{"Неправильный запрос!", " "};

@@ -157,6 +157,9 @@ public final class TelegramBot extends TelegramLongPollingBot {
                 case "Предсказание":
                     com = "/possibility";
                     break;
+                case "Совместимость":
+                    com = "/compatibility";
+                    break;
             }
             String[] answer = new String[0];
             try {

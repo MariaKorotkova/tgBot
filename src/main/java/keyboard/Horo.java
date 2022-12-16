@@ -24,11 +24,14 @@ public class Horo extends Keyboard {
         List<List<InlineKeyboardButton>> button = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
+        List<InlineKeyboardButton> row3 = new ArrayList<>();
 
         row1.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Гороскоп на день:crystal_ball:")).callbackData("Гороскоп на день").build());
         button.add(row1);
         row2.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Совместимость:crystal_ball:")).callbackData("Совместимость").build());
         button.add(row2);
+        row3.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Музыка для знаков зодиака:crystal_ball:")).callbackData("Музыка для знаков зодиака").build());
+        button.add(row3);
 
         markup.setKeyboard(button);
         message.setReplyMarkup(markup);

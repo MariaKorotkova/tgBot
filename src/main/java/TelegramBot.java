@@ -5,6 +5,7 @@ import keyboard.MakeKeyboard;
 import keyboard.Taro;
 import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -77,6 +78,18 @@ public final class TelegramBot extends TelegramLongPollingBot {
         }
         file.delete();
     }
+    public void sendAudio(String filename, Long chatId) {
+        java.io.File file = new java.io.File("audio", filename + ".mp3");
+        InputFile f = new InputFile(file);
+        SendAudio sendAudio = new SendAudio(chatId.toString(), f);
+        try {
+            execute(sendAudio);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+        //file.delete();
+    }
+
 
     /**
      * Функция обработки команд
@@ -117,19 +130,40 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 default -> {
+                    String[] answer = new String[0];
                     try {
-                        String[] answer = c.command(command, status);
-                        text = answer[0];
-                        status = answer[1];
-                    } catch (IOException | ParseException e) {
+                        answer = c.command(command, status);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    message.setChatId(chatId);
-                    message.setText(text);
-                    try {
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
+                    text = answer[0];
+                    status = answer[1];
+                    if (answer.length != 2 && answer[2] == "SendAudio") {
+                        message.setChatId(chatId);
+                        message.setText("Ожидайте, ищем для вас музыку");
+                        try {
+                            execute(message);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                        sendAudio(text, chatId);
+                        message.setText("Ура, музыка подъехала!");
+                        try {
+                            execute(message);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    else {
+                        message.setChatId(chatId);
+                        message.setText(text);
+                        try {
+                            execute(message);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -145,6 +179,9 @@ public final class TelegramBot extends TelegramLongPollingBot {
             String call = msq.getText();
             String com = "";
             switch (call) {
+                case "Музыка для знаков зодиака":
+                    com = "/music";
+                    break;
                 case "Гороскоп на день":
                     com = "/horoscope_of_the_day";
                     break;
@@ -199,4 +236,3 @@ public final class TelegramBot extends TelegramLongPollingBot {
         }
     }
 }
-

@@ -4,6 +4,7 @@ import cards.CardsDestiny;
 import cards.CardsDay;
 import cards.CardOfTheDestiny;
 import cards.CardOfTheDay;
+import horoscope.MusicForZodiac;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import random.Random;
@@ -40,11 +41,13 @@ public class Commands {
                         Карты Таро:
                         /card_of_the_day:  Карта дня - карта предсказание на день
                         /card_of_the_destiny:  Карта судьбы по дате рождения
+                        /possibility:  Предсказание вероятности наступления события
                         
                         Гороскоп:
                         /horoscope_of_the_day:  Гороскоп на день
+                        /compatibility:  Совместимость знаков зодиака
+                        /music:  Музыка для знаков зодиака
                         
-                        /possibility:  Предсказание вероятности наступления события
                         """, " "};
             case "/card_of_the_day":
                 CardsDay j = new CardOfTheDay();
@@ -71,6 +74,8 @@ public class Commands {
                 return new String[]{"Введите имя:", "getNameNewUser"};
             case "/horoscope_of_the_day":
                 return new String[]{"Введите знак зодиака", "getZodiac"};
+            case "/music":
+                return new String[]{"Введите знак зодиака", "getZodiacForMusic",};
             default:
                 switch (status) {
                     case "getNameNewUser" -> {
@@ -111,6 +116,10 @@ public class Commands {
                     case "getZodiac" -> {
                         HoroscopeOfTheDay i = new HoroscopeOfTheDay();
                         return new String[]{i.horoscope(name), " "};
+                    }
+                    case "getZodiacForMusic" -> {
+                        MusicForZodiac i = new MusicForZodiac();
+                        return new String[]{i.getMusic(name), " ", "SendAudio"};
                     }
                     case "getSigns" -> {
                         Compatibility i = new Compatibility();

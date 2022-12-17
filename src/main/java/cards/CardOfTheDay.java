@@ -2,11 +2,12 @@ package cards;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import random.Random;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -19,20 +20,20 @@ public class CardOfTheDay implements CardsDay {
      * @return возвращает описание одной из карт
      */
     @Override
-    public String[] sayCards() {
-        Properties property = new Properties();
+    public ArrayList<String> getCard() {
+        Properties photos = new Properties();
         Properties cards = new Properties();
 
         try {
-            File file = new File("src\\main\\resources\\NameOfCards.properties");
-            property.load(new FileReader(file));
+            File fileCards = new File("src\\main\\resources\\NameOfCards.properties");
+            cards.load(new FileReader(fileCards));
 
-            File file2 = new File("src\\main\\resources\\NameOfCards2.properties");
-            cards.load(new FileReader(file2));
+            File filePhoto = new File("src\\main\\resources\\NameOfPhotoCards.properties");
+            photos.load(new FileReader(filePhoto));
 
             Random i = new Random();
             int number = i.randomNumber();
-            String name = property.getProperty("prediction" + number);
+            String nameOfPhoto = photos.getProperty("prediction" + number);
             String nameOfCard = cards.getProperty("prediction" + number);
 
             Document document = Jsoup.connect("https://alma-taro.ru/taro-day/"
@@ -44,10 +45,10 @@ public class CardOfTheDay implements CardsDay {
             Elements mining = document.select("div.col-md-8.col-md-push-4 p");
             String cardName = card.get(0).text();
             String predicton = cardName.substring(0, cardName.length() - 32) + "\n\n" + mining.text();
-            return new String[]{predicton, name};
+            return new ArrayList<>(Arrays.asList(predicton, nameOfPhoto));
         } catch (IOException e) {
             System.err.println(e);
         }
-        return new String[]{};
+        return new ArrayList<>();
     }
 }

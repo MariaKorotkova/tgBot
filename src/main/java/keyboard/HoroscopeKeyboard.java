@@ -10,13 +10,13 @@ import java.util.List;
 /**
  * Класс Гороскоп
  */
-public class Horo extends Keyboard {
+public class HoroscopeKeyboard extends Keyboard {
     /**
      * Функция создания кнопки Гороскоп
      *
      * @param chat_id идентификатор чата
      */
-    public static void createHoro(long chat_id) {
+    public void getHoroscopeKeyboard(long chat_id) {
         message.setChatId(chat_id);
         message.setText(EmojiParser.parseToUnicode(":sparkles:Гороскоп:sparkles:"));
 

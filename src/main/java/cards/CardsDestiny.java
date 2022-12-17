@@ -1,7 +1,9 @@
 package cards;
 
+import java.util.ArrayList;
+
 public interface CardsDestiny {
     int numberOfTheDestiny(String date);
 
-    String[] cardsOfTheDestiny(int num);
+    ArrayList<String> cardsOfTheDestiny(int num);
 }

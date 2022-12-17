@@ -9,19 +9,19 @@ import java.net.URL;
 /**
  * Класс Парсер карт
  */
-public class ParserForCards {
+public class DownloadPhoto {
     /**
      * Функция загрузки карт
      *
      * @param href название карты
      */
-    public static void ParseImg(String href) throws IOException {
-        String Url = "https://astrohelper.ru/images/gadaniya/arkany/" + href + ".jpg";
+    public void savePhoto(String href) throws IOException {
+        String urlImg = "https://astrohelper.ru/images/gadaniya/arkany/" + href + ".jpg";
         String fileDownload = "photo/" + href + ".jpg";
         FileOutputStream out = null;
         BufferedInputStream in = null;
         try {
-            in = new BufferedInputStream(new URL(Url).openStream());
+            in = new BufferedInputStream(new URL(urlImg).openStream());
             out = new FileOutputStream(fileDownload);
             byte[] data = new byte[1024];
             int count;

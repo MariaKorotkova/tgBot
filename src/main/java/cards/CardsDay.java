@@ -1,5 +1,7 @@
 package cards;
 
+import java.util.ArrayList;
+
 public interface CardsDay {
-    String[] sayCards();
+    ArrayList<String> getCard();
 }

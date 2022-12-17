@@ -12,6 +12,8 @@ import horoscope.HoroscopeOfTheDay;
 import horoscope.Compatibility;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.json.simple.JSONObject;
 
@@ -24,17 +26,17 @@ public class Commands {
      *
      * @param name название команды
      */
-    public String[] command(String name, String status) throws IOException, ParseException {
+    public ArrayList<String> command(String name, String status) throws IOException, ParseException {
 
         switch (name) {
             case "/start":
-                return new String[]{"""
+                return new ArrayList<>(Arrays.asList("""
                         Привет, я GadalkaBot!
                         Включи клавиатуру, чтобы было удобней общаться /keyboard
                         Нажми /help , чтобы посмотреть,что я могу делать
-                        """, " "};
+                        """, " "));
             case "/help":
-                return new String[]{"""
+                return new ArrayList<>(Arrays.asList("""
                         /new_user:  Создание пользователя
                         /keyboard:  Создание клавиатуры
                         
@@ -49,36 +51,36 @@ public class Commands {
                         /music:  Музыка для знаков зодиака
                         /chart:  График дня для знака зодиака
                         
-                        """, " "};
+                        """, " "));
             case "/card_of_the_day":
-                CardsDay j = new CardOfTheDay();
-                String[] answer = j.sayCards();
-                return new String[]{answer[0], " ", answer[1]};
+                CardsDay cardDay = new CardOfTheDay();
+                ArrayList<String> answer = cardDay.getCard();
+                return new ArrayList<>(Arrays.asList(answer.get(0), " ", answer.get(1)));
             case "/card_of_the_destiny":
-                File file1 = new File("user.json");
-                if (file1.length() == 0) {
-                    return new String[]{"Создайте пользователя: /new_user", " "};
+                File fileUser = new File("user.json");
+                if (fileUser.length() == 0) {
+                    return new ArrayList<>(Arrays.asList("Создайте пользователя: /new_user", " "));
                 } else {
                     Object obj = new JSONParser().parse(new FileReader("date.json"));
                     JSONObject jo = (JSONObject) obj;
                     String date = (String) jo.get("Date");
-                    CardsDestiny p = new CardOfTheDestiny();
-                    String[] result = p.cardsOfTheDestiny(p.numberOfTheDestiny(date));
-                    return new String[]{result[0], " ", result[1]};
+                    CardsDestiny cardDestiny = new CardOfTheDestiny();
+                    ArrayList<String> result = cardDestiny.cardsOfTheDestiny(cardDestiny.numberOfTheDestiny(date));
+                    return new ArrayList<>(Arrays.asList(result.get(0), " ", result.get(1)));
                 }
             case "/possibility":
-                return new String[]{"Введите ваш вопрос:", "getPossibility"};
+                return new ArrayList<>(Arrays.asList("Введите ваш вопрос:", "getPossibility"));
             case "/compatibility":
-                return new String[]{"Введите Ваши знаки зодиака и пол в формате " +
-                        "\nОвен ж Стрелец м", "getSigns"};
+                return new ArrayList<>(Arrays.asList("Введите Ваши знаки зодиака и пол в формате " +
+                        "\nОвен ж Стрелец м", "getSigns"));
             case "/new_user":
-                return new String[]{"Введите имя:", "getNameNewUser"};
+                return new ArrayList<>(Arrays.asList("Введите имя:", "getNameNewUser"));
             case "/horoscope_of_the_day":
-                return new String[]{"Введите знак зодиака", "getZodiac"};
+                return new ArrayList<>(Arrays.asList("Введите знак зодиака", "getZodiac"));
             case "/music":
-                return new String[]{"Введите знак зодиака", "getZodiacForMusic"};
+                return new ArrayList<>(Arrays.asList("Введите знак зодиака", "getZodiacForMusic"));
             case "/chart":
-                return new String[]{"Ведите знак зодиака", "getZodiacForChart"};
+                return new ArrayList<>(Arrays.asList("Ведите знак зодиака", "getZodiacForChart"));
             default:
                 switch (status) {
                     case "getNameNewUser" -> {
@@ -93,7 +95,7 @@ public class Commands {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        return new String[]{"Введите дату рождения в формате 01011999:", "getDateNewUser"};
+                        return new ArrayList<>(Arrays.asList("Введите дату рождения в формате 01011999:", "getDateNewUser"));
                     }
                     case "getDateNewUser" -> {
                         JSONObject jsonDate = new JSONObject();
@@ -110,29 +112,29 @@ public class Commands {
                         Object obj = new JSONParser().parse(new FileReader("user.json"));
                         JSONObject jo = (JSONObject) obj;
                         String nameAnswer = (String) jo.get("Name");
-                        return new String[]{String.format("Привет, %s!", nameAnswer), " "};
+                        return new ArrayList<>(Arrays.asList(String.format("Привет, %s!", nameAnswer), " "));
                     }
                     case "getPossibility" -> {
                         Random i = new Random();
-                        return new String[]{i.randomFunc(), " "};
+                        return new ArrayList<>(Arrays.asList(i.randomFunc(), " "));
                     }
                     case "getZodiac" -> {
                         HoroscopeOfTheDay i = new HoroscopeOfTheDay();
-                        return new String[]{i.horoscope(name), " "};
+                        return new ArrayList<>(Arrays.asList(i.horoscope(name), " "));
                     }
                     case "getZodiacForMusic" -> {
                         MusicForZodiac i = new MusicForZodiac();
-                        return new String[]{i.getMusic(name), " ", "SendAudio"};
+                        return new ArrayList<>(Arrays.asList(i.getMusic(name), " ", "SendAudio"));
                     }
                     case "getSigns" -> {
                         Compatibility i = new Compatibility();
-                        return new String[]{i.compatibilityOfSigns(name), " "};
+                        return new ArrayList<>(Arrays.asList(i.getCompatibilityOfSigns(name), " "));
                     }
                     case "getZodiacForChart" -> {
-                        return new String[]{"график", " "};
+                        return new ArrayList<>(Arrays.asList("график", " "));
                     }
                 }
-                return new String[]{"Неправильный запрос!", " "};
+                return new ArrayList<>(Arrays.asList("Неправильный запрос!", " "));
         }
     }
 }

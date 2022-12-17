@@ -1,8 +1,8 @@
-import cards.ParserForCards;
+import cards.DownloadPhoto;
 import commands.Commands;
-import keyboard.Horo;
+import keyboard.HoroscopeKeyboard;
 import keyboard.MakeKeyboard;
-import keyboard.Taro;
+import keyboard.TaroKeyboard;
 import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Класс Телеграм Бот
@@ -88,7 +89,6 @@ public final class TelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-        //file.delete();
     }
 
 
@@ -104,7 +104,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage();
             String command = update.getMessage().getText();
             Commands c = new Commands();
-            String text = "";
+            String text;
             switch (command) {
                 case "/keyboard" -> {
                     MakeKeyboard.createKeyboard(chatId);
@@ -115,7 +115,8 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 case "Гороскоп" -> {
-                    Horo.createHoro(chatId);
+                    HoroscopeKeyboard horoscopeKeyboard = new HoroscopeKeyboard();
+                    horoscopeKeyboard.getHoroscopeKeyboard(chatId);
                     try {
                         execute(MakeKeyboard.message);
                     } catch (TelegramApiException e) {
@@ -123,7 +124,8 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 case "Карты Таро" -> {
-                    Taro.createTaro(chatId);
+                    TaroKeyboard taroKeyboard = new TaroKeyboard();
+                    taroKeyboard.getTaroKeyboard(chatId);
                     try {
                         execute(MakeKeyboard.message);
                     } catch (TelegramApiException e) {
@@ -131,7 +133,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 default -> {
-                    String[] answer = new String[0];
+                    ArrayList<String> answer;
                     try {
                         answer = c.command(command, status);
                     } catch (IOException e) {
@@ -139,9 +141,9 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    text = answer[0];
-                    status = answer[1];
-                    if (answer.length != 2 && answer[2] == "SendAudio") {
+                    text = answer.get(0);
+                    status = answer.get(1);
+                    if (answer.toArray().length != 2 && answer.get(2).equals("SendAudio")) {
                         message.setChatId(chatId);
                         message.setText("Ожидайте, ищем для вас музыку");
                         try {
@@ -170,15 +172,12 @@ public final class TelegramBot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             Commands c = new Commands();
             String text;
-            SendMessage msq = new SendMessage();
             SendMessage message = new SendMessage();
             Long chatId = update.getCallbackQuery().getMessage().getChatId();
-            msq.setText(update.getCallbackQuery().getData());
-            msq.setChatId(update.getCallbackQuery().getMessage().getChatId());
-
-            String call = msq.getText();
+            SendMessage queryMessage = new SendMessage();
+            queryMessage.setText(update.getCallbackQuery().getData());
             String com = "";
-            switch (call) {
+            switch (queryMessage.getText()) {
                 case "График дня":
                     com = "/chart";
                     break;
@@ -201,7 +200,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     com = "/compatibility";
                     break;
             }
-            String[] answer = new String[0];
+            ArrayList<String> answer;
             try {
                 answer = c.command(com, status);
             } catch (IOException e) {
@@ -209,12 +208,13 @@ public final class TelegramBot extends TelegramLongPollingBot {
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-            text = answer[0];
-            status = answer[1];
-            if (answer.length != 2) {
-                photoName = answer[2];
+            text = answer.get(0);
+            status = answer.get(1);
+            if (answer.toArray().length != 2) {
+                photoName = answer.get(2);
                 try {
-                    ParserForCards.ParseImg(photoName);
+                    DownloadPhoto parserForCards = new DownloadPhoto();
+                    parserForCards.savePhoto(photoName);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -235,7 +235,6 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     throw new RuntimeException(e);
                 }
             }
-
         }
     }
 }

@@ -25,6 +25,7 @@ public class Horo extends Keyboard {
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         List<InlineKeyboardButton> row3 = new ArrayList<>();
+        List<InlineKeyboardButton> row4 = new ArrayList<>();
 
         row1.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Гороскоп на день:crystal_ball:")).callbackData("Гороскоп на день").build());
         button.add(row1);
@@ -32,6 +33,8 @@ public class Horo extends Keyboard {
         button.add(row2);
         row3.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:Музыка для знаков зодиака:crystal_ball:")).callbackData("Музыка для знаков зодиака").build());
         button.add(row3);
+        row4.add(InlineKeyboardButton.builder().text(EmojiParser.parseToUnicode(":crystal_ball:График дня:crystal_ball:")).callbackData("График дня").build());
+        button.add(row4);
 
         markup.setKeyboard(button);
         message.setReplyMarkup(markup);

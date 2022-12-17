@@ -78,6 +78,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
         }
         file.delete();
     }
+
     public void sendAudio(String filename, Long chatId) {
         java.io.File file = new java.io.File("audio", filename + ".mp3");
         InputFile f = new InputFile(file);
@@ -155,8 +156,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
                         } catch (TelegramApiException e) {
                             throw new RuntimeException(e);
                         }
-                    }
-                    else {
+                    } else {
                         message.setChatId(chatId);
                         message.setText(text);
                         try {
@@ -179,6 +179,9 @@ public final class TelegramBot extends TelegramLongPollingBot {
             String call = msq.getText();
             String com = "";
             switch (call) {
+                case "График дня":
+                    com = "/chart";
+                    break;
                 case "Музыка для знаков зодиака":
                     com = "/music";
                     break;

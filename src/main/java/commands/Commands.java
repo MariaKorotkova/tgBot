@@ -47,6 +47,7 @@ public class Commands {
                         /horoscope_of_the_day:  Гороскоп на день
                         /compatibility:  Совместимость знаков зодиака
                         /music:  Музыка для знаков зодиака
+                        /chart:  График дня для знака зодиака
                         
                         """, " "};
             case "/card_of_the_day":
@@ -75,7 +76,9 @@ public class Commands {
             case "/horoscope_of_the_day":
                 return new String[]{"Введите знак зодиака", "getZodiac"};
             case "/music":
-                return new String[]{"Введите знак зодиака", "getZodiacForMusic",};
+                return new String[]{"Введите знак зодиака", "getZodiacForMusic"};
+            case "/chart":
+                return new String[]{"Ведите знак зодиака", "getZodiacForChart"};
             default:
                 switch (status) {
                     case "getNameNewUser" -> {
@@ -124,6 +127,9 @@ public class Commands {
                     case "getSigns" -> {
                         Compatibility i = new Compatibility();
                         return new String[]{i.compatibilityOfSigns(name), " "};
+                    }
+                    case "getZodiacForChart" -> {
+                        return new String[]{"график", " "};
                     }
                 }
                 return new String[]{"Неправильный запрос!", " "};

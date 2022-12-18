@@ -11,7 +11,7 @@ import java.net.URL;
  */
 public class DownloadPhoto {
     /**
-     * Функция загрузки карт
+     * Метод загрузки карт
      *
      * @param href название карты
      */

@@ -2,8 +2,17 @@ package horoscope;
 
 import java.util.HashMap;
 
+/**
+ * Класс Список знаков зодиака
+ */
 public class HashMapHoroscope {
-    public String getZodiacFromHoroscope(String key){
+    /**
+     * Метод получения знака зодиака для гороскопа
+     *
+     * @param key знак зодиака на русском
+     * @return возвращает знак зодиака на английском
+     */
+    public String getZodiacFromHoroscope(String key) {
         HashMap<String, String> signs = new HashMap<String, String>();
         signs.put("Овен", "aries");
         signs.put("Телец", "taurus");
@@ -19,7 +28,14 @@ public class HashMapHoroscope {
         signs.put("Весы", "libra");
         return signs.get(key);
     }
-    public String getZodiacForCompability(String key){
+
+    /**
+     * Метод получения знака зодиака для совместимости
+     *
+     * @param key знак зодиака на русском
+     * @return возвращает знак зодиака на английском
+     */
+    public String getZodiacForCompability(String key) {
         HashMap<String, String> sign = new HashMap<String, String>();
         sign.put("Овен", "oven");
         sign.put("Телец", "telec");

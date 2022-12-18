@@ -3,6 +3,7 @@ import commands.Commands;
 import keyboard.HoroscopeKeyboard;
 import keyboard.MakeKeyboard;
 import keyboard.TaroKeyboard;
+import commands.NameOfCommands;
 import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
@@ -80,6 +81,12 @@ public final class TelegramBot extends TelegramLongPollingBot {
         file.delete();
     }
 
+    /**
+     * Функция отправки аудио
+     *
+     * @param filename название аудио
+     * @param chatId   идентификатор чата
+     */
     public void sendAudio(String filename, Long chatId) {
         java.io.File file = new java.io.File("audio", filename + ".mp3");
         InputFile f = new InputFile(file);
@@ -176,30 +183,9 @@ public final class TelegramBot extends TelegramLongPollingBot {
             Long chatId = update.getCallbackQuery().getMessage().getChatId();
             SendMessage queryMessage = new SendMessage();
             queryMessage.setText(update.getCallbackQuery().getData());
-            String com = "";
-            switch (queryMessage.getText()) {
-                case "График дня":
-                    com = "/chart";
-                    break;
-                case "Музыка для знаков зодиака":
-                    com = "/music";
-                    break;
-                case "Гороскоп на день":
-                    com = "/horoscope_of_the_day";
-                    break;
-                case "Карта дня":
-                    com = "/card_of_the_day";
-                    break;
-                case "Карта судьбы":
-                    com = "/card_of_the_destiny";
-                    break;
-                case "Предсказание":
-                    com = "/possibility";
-                    break;
-                case "Совместимость":
-                    com = "/compatibility";
-                    break;
-            }
+            NameOfCommands command = new NameOfCommands();
+            String com = command.getCommand(queryMessage.getText());
+
             ArrayList<String> answer;
             try {
                 answer = c.command(com, status);

@@ -20,10 +20,7 @@ public class HoroscopeOfTheDay {
         HashMapHoroscope sign = new HashMapHoroscope();
         try {
             Document document = Jsoup.connect("https://7days.ru/astro/horoscope/"
-                            + sign.getZodiacFromHoroscope(key) + "/today")
-                    .userAgent("Chrome/4.0.249.0 Safari/532.5")
-                    .referrer("http://www.google.com")
-                    .get();
+                    + sign.getZodiacFromHoroscope(key) + "/today").get();
             Elements div = document.select("div.horoscope-7days__content_text");
             String str = ":" + sign.getZodiacFromHoroscope(key)
                     + ": " + name + "\n\n";

@@ -5,3 +5,5 @@
 /photo/
 /NameOfCards.properties
 /NameOfPhotoCards.properties
+*.json
+/target/

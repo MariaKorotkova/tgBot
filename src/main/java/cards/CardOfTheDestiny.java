@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
@@ -14,7 +15,7 @@ import java.util.Properties;
  */
 public class CardOfTheDestiny implements CardsDestiny {
     /**
-     * Функция получения номера
+     * Метод получения номера
      *
      * @param date дата рождения
      * @return возвращает номер, посчитанный по дате рождения
@@ -39,7 +40,7 @@ public class CardOfTheDestiny implements CardsDestiny {
     }
 
     /**
-     * Функция получения одной из Карт Судьбы
+     * Метод получения одной из Карт Судьбы
      *
      * @param num номер, посчитанный по дате рождения
      * @return возвращает карту, соответствующую номеру
@@ -49,26 +50,25 @@ public class CardOfTheDestiny implements CardsDestiny {
         Properties cards = new Properties();
 
         try {
-            File filePhotos = new File("src\\main\\resources\\NameOfPhotoCards.properties");
+            File filePhotos = new File(Thread.currentThread().getContextClassLoader()
+                    .getResource("NameOfPhotoCards.properties").toURI());
             photos.load(new FileReader(filePhotos));
 
-            File fileCards = new File("src\\main\\resources\\NameOfPhotoCards.properties");
+            File fileCards = new File(Thread.currentThread().getContextClassLoader()
+                    .getResource("NameOfCards.properties").toURI());
             cards.load(new FileReader(fileCards));
 
             String nameOfPhoto = photos.getProperty("prediction" + num);
             String nameOfCard = cards.getProperty("prediction" + num);
 
             Document document = Jsoup.connect("https://alma-taro.ru/znachenie-taro/"
-                            + nameOfCard + "-znachenie/")
-                    .userAgent("Chrome/4.0.249.0 Safari/532.5")
-                    .referrer("http://www.google.com")
-                    .get();
+                    + nameOfCard + "-znachenie/").get();
             Elements card = document.select("section.main > div h2");
             Elements mining = document.select("div.col-md-8.col-md-push-4 p");
             String cardName = card.get(0).text();
             String predicton = cardName.substring(0, cardName.length() - 40) + "\n\n" + mining.get(0).text();
             return new ArrayList<>(Arrays.asList(predicton, nameOfPhoto));
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             System.err.println(e);
         }
         return new ArrayList<>();

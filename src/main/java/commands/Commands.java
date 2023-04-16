@@ -1,7 +1,7 @@
 package commands;
 
-import cards.CardsDestiny;
-import cards.CardsDay;
+import cards.CardDestiny;
+import cards.CardDay;
 import cards.CardOfTheDestiny;
 import cards.CardOfTheDay;
 import horoscope.MusicForZodiac;
@@ -53,8 +53,8 @@ public class Commands {
                         
                         """, " "));
             case "/card_of_the_day":
-                CardsDay cardDay = new CardOfTheDay();
-                ArrayList<String> answer = cardDay.getCard();
+                CardDay cardDay = new CardOfTheDay();
+                ArrayList<String> answer = cardDay.getCardOfTheDayDescription();
                 return new ArrayList<>(Arrays.asList(answer.get(0), " ", answer.get(1)));
             case "/card_of_the_destiny":
                 File fileUser = new File("user.json");
@@ -64,8 +64,8 @@ public class Commands {
                     Object obj = new JSONParser().parse(new FileReader("date.json"));
                     JSONObject jo = (JSONObject) obj;
                     String date = (String) jo.get("Date");
-                    CardsDestiny cardDestiny = new CardOfTheDestiny();
-                    ArrayList<String> result = cardDestiny.cardsOfTheDestiny(cardDestiny.numberOfTheDestiny(date));
+                    CardDestiny cardDestiny = new CardOfTheDestiny();
+                    ArrayList<String> result = cardDestiny.getCardsOfTheDestinyDescription(cardDestiny.numberOfTheDestiny(date));
                     return new ArrayList<>(Arrays.asList(result.get(0), " ", result.get(1)));
                 }
             case "/possibility":

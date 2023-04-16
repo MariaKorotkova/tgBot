@@ -14,20 +14,20 @@ import java.util.Properties;
 /**
  * Класс Карта дня
  */
-public class CardOfTheDay implements CardsDay {
+public class CardOfTheDay implements CardDay {
     /**
      * Метод получения одной из Карт Дня
      *
      * @return возвращает описание одной из карт
      */
     @Override
-    public ArrayList<String> getCard() {
+    public ArrayList<String> getCardOfTheDayDescription() {
         Properties photos = new Properties();
         Properties cards = new Properties();
 
         try {
             File filePhoto = new File(Thread.currentThread().getContextClassLoader()
-                    .getResource("NameOfPhotoCards.properties").toURI());
+                    .getResource("NameOfCardsPhoto.properties").toURI());
             photos.load(new FileReader(filePhoto));
 
             File fileCards = new File(Thread.currentThread().getContextClassLoader()

@@ -4,6 +4,7 @@
 /audio/
 /photo/
 /NameOfCards.properties
-/NameOfPhotoCards.properties
+/NameOfCardsPhoto.properties
 *.json
 /target/
+/chart.jpg

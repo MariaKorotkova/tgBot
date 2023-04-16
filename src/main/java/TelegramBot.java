@@ -1,4 +1,4 @@
-import cards.DownloadPhoto;
+import cards.PhotoDownloader;
 import commands.Commands;
 import keyboard.HoroscopeKeyboard;
 import keyboard.MakeKeyboard;
@@ -98,7 +98,6 @@ public final class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-
     /**
      * Функция обработки команд
      *
@@ -143,9 +142,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     ArrayList<String> answer;
                     try {
                         answer = c.command(command, status);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (ParseException e) {
+                    } catch (IOException | ParseException e) {
                         throw new RuntimeException(e);
                     }
                     text = answer.get(0);
@@ -189,9 +186,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
             ArrayList<String> answer;
             try {
                 answer = c.command(com, status);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
             text = answer.get(0);
@@ -199,8 +194,8 @@ public final class TelegramBot extends TelegramLongPollingBot {
             if (answer.toArray().length != 2) {
                 photoName = answer.get(2);
                 try {
-                    DownloadPhoto parserForCards = new DownloadPhoto();
-                    parserForCards.savePhoto(photoName);
+                    PhotoDownloader parserForCards = new PhotoDownloader();
+                    parserForCards.downloadPhoto(photoName);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

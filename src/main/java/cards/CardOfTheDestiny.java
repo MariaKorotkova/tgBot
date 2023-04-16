@@ -13,7 +13,7 @@ import java.util.Properties;
 /**
  * Класс Карты Судьбы
  */
-public class CardOfTheDestiny implements CardsDestiny {
+public class CardOfTheDestiny implements CardDestiny {
     /**
      * Метод получения номера
      *
@@ -40,18 +40,18 @@ public class CardOfTheDestiny implements CardsDestiny {
     }
 
     /**
-     * Метод получения одной из Карт Судьбы
+     * Метод получения описания одной из Карт Судьбы
      *
      * @param num номер, посчитанный по дате рождения
      * @return возвращает карту, соответствующую номеру
      */
-    public ArrayList<String> cardsOfTheDestiny(int num) {
+    public ArrayList<String> getCardsOfTheDestinyDescription(int num) {
         Properties photos = new Properties();
         Properties cards = new Properties();
 
         try {
             File filePhotos = new File(Thread.currentThread().getContextClassLoader()
-                    .getResource("NameOfPhotoCards.properties").toURI());
+                    .getResource("NameOfCardsPhoto.properties").toURI());
             photos.load(new FileReader(filePhotos));
 
             File fileCards = new File(Thread.currentThread().getContextClassLoader()
@@ -66,8 +66,8 @@ public class CardOfTheDestiny implements CardsDestiny {
             Elements card = document.select("section.main > div h2");
             Elements mining = document.select("div.col-md-8.col-md-push-4 p");
             String cardName = card.get(0).text();
-            String predicton = cardName.substring(0, cardName.length() - 40) + "\n\n" + mining.get(0).text();
-            return new ArrayList<>(Arrays.asList(predicton, nameOfPhoto));
+            String prediction = cardName.substring(0, cardName.length() - 40) + "\n\n" + mining.get(0).text();
+            return new ArrayList<>(Arrays.asList(prediction, nameOfPhoto));
         } catch (IOException | URISyntaxException e) {
             System.err.println(e);
         }

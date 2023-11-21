@@ -82,6 +82,20 @@ public final class TelegramBot extends TelegramLongPollingBot {
     }
 
     /**
+     * Функция отправки графика
+     */
+    public void sendChart(String filename, Long chatId) {
+        java.io.File file = new java.io.File("src/main/java/chart", filename + ".jpg");
+        InputFile f = new InputFile(file);
+        SendPhoto sendPhoto = new SendPhoto(chatId.toString(), f);
+        try {
+            execute(sendPhoto);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+        file.delete();
+    }
+    /**
      * Функция отправки аудио
      *
      * @param filename название аудио
@@ -171,6 +185,10 @@ public final class TelegramBot extends TelegramLongPollingBot {
                             throw new RuntimeException(e);
                         }
                     }
+                    if (answer.toArray().length != 2 && answer.get(2).equals("SendChart")) {
+                        sendChart(text, chatId);
+                    }
+
                 }
             }
         } else if (update.hasCallbackQuery()) {

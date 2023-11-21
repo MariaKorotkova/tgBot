@@ -24,4 +24,13 @@ public class Random implements RandomFunction {
     public int randomNumber() {
         return (int) (1 + Math.random() * 21);
     }
+    /**
+     * Функция получения рандомного числа
+     *
+     * @return возвращает рандомное число от 1 до 10
+     */
+
+    public int randomNumberForChart() {
+        return (int) (1 + Math.random() * 9);
+    }
 }

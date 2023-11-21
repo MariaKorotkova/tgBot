@@ -4,18 +4,23 @@ import cards.CardDestiny;
 import cards.CardDay;
 import cards.CardOfTheDestiny;
 import cards.CardOfTheDay;
+import chart.BarChartDemo;
 import horoscope.MusicForZodiac;
+import org.jfree.ui.RefineryUtilities;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import random.Random;
 import horoscope.HoroscopeOfTheDay;
 import horoscope.Compatibility;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.json.simple.JSONObject;
+
+import javax.imageio.ImageIO;
 
 /**
  * Класс команд
@@ -131,7 +136,8 @@ public class Commands {
                         return new ArrayList<>(Arrays.asList(i.getCompatibilityOfSigns(name), " "));
                     }
                     case "getZodiacForChart" -> {
-                        return new ArrayList<>(Arrays.asList("график", " "));
+                        BarChartDemo i = new BarChartDemo("JFreeChart: BarChartDemo.java");
+                        return new ArrayList<>(Arrays.asList("chart", " ", "SendChart"));
                     }
                 }
                 return new ArrayList<>(Arrays.asList("Неправильный запрос!", " "));

@@ -18,7 +18,6 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
-import org.jfree.ui.RefineryUtilities;
 import random.Random;
 
 public class BarChartDemo extends ApplicationFrame {
@@ -66,11 +65,11 @@ public class BarChartDemo extends ApplicationFrame {
         int number4 = i.randomNumberForChart();
         int number5 = i.randomNumberForChart();
 
-        dataset.addValue(number1, "Удача", "Овен");
-        dataset.addValue(number2, "Бизнес" , "Овен");
-        dataset.addValue(number3, "Деньги" , "Овен");
-        dataset.addValue(number4, "Счастье" , "Овен");
-        dataset.addValue(number5, "Любовь" , "Овен");
+        dataset.addValue(number1, "Удача", "");
+        dataset.addValue(number2, "Бизнес" , "");
+        dataset.addValue(number3, "Деньги" , "");
+        dataset.addValue(number4, "Счастье" , "");
+        dataset.addValue(number5, "Любовь" , "");
         return dataset;
     }
 
@@ -86,12 +85,5 @@ public class BarChartDemo extends ApplicationFrame {
         renderer.setDrawBarOutline(false);
         chart.getLegend().setFrame(BlockBorder.NONE);
         return chart;
-    }
-
-    public static void main(String[] args) {
-        BarChartDemo demo = new BarChartDemo("JFreeChart: BarChartDemo.java");
-        demo.pack();
-        RefineryUtilities.centerFrameOnScreen(demo);
-        demo.setVisible(true);
     }
 }

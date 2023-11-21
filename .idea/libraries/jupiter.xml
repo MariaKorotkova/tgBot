@@ -1,9 +1,0 @@
-<component name="libraryTable">
-    <library name="jupiter">
-        <CLASSES>
-            <root url="file://$MAVEN_REPOSITORY$/org/junit/jupiter" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-    </library>
-</component>

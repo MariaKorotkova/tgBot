@@ -1,0 +1,11 @@
+# Default ignored files
+*.json
+/target/
+/chart.jpg
+tgBot/bin
+.idea/
+target/
+audio/
+photo/
+/resources/
+/src/main/java/chart/chart.jpg

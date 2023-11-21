@@ -1,10 +1,12 @@
-import cards.ParserForCards;
+import cards.PhotoDownloader;
 import commands.Commands;
-import keyboard.Horo;
+import keyboard.HoroscopeKeyboard;
 import keyboard.MakeKeyboard;
-import keyboard.Taro;
+import keyboard.TaroKeyboard;
+import commands.NameOfCommands;
 import org.json.simple.parser.ParseException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -12,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Класс Телеграм Бот
@@ -79,6 +82,23 @@ public final class TelegramBot extends TelegramLongPollingBot {
     }
 
     /**
+     * Функция отправки аудио
+     *
+     * @param filename название аудио
+     * @param chatId   идентификатор чата
+     */
+    public void sendAudio(String filename, Long chatId) {
+        java.io.File file = new java.io.File("audio", filename + ".mp3");
+        InputFile f = new InputFile(file);
+        SendAudio sendAudio = new SendAudio(chatId.toString(), f);
+        try {
+            execute(sendAudio);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Функция обработки команд
      *
      * @param update обновления
@@ -90,7 +110,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage();
             String command = update.getMessage().getText();
             Commands c = new Commands();
-            String text = "";
+            String text;
             switch (command) {
                 case "/keyboard" -> {
                     MakeKeyboard.createKeyboard(chatId);
@@ -101,7 +121,8 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 case "Гороскоп" -> {
-                    Horo.createHoro(chatId);
+                    HoroscopeKeyboard horoscopeKeyboard = new HoroscopeKeyboard();
+                    horoscopeKeyboard.getHoroscopeKeyboard(chatId);
                     try {
                         execute(MakeKeyboard.message);
                     } catch (TelegramApiException e) {
@@ -109,7 +130,8 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 case "Карты Таро" -> {
-                    Taro.createTaro(chatId);
+                    TaroKeyboard taroKeyboard = new TaroKeyboard();
+                    taroKeyboard.getTaroKeyboard(chatId);
                     try {
                         execute(MakeKeyboard.message);
                     } catch (TelegramApiException e) {
@@ -117,61 +139,63 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 default -> {
+                    ArrayList<String> answer;
                     try {
-                        String[] answer = c.command(command, status);
-                        text = answer[0];
-                        status = answer[1];
+                        answer = c.command(command, status);
                     } catch (IOException | ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    message.setChatId(chatId);
-                    message.setText(text);
-                    try {
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        throw new RuntimeException(e);
+                    text = answer.get(0);
+                    status = answer.get(1);
+                    if (answer.toArray().length != 2 && answer.get(2).equals("SendAudio")) {
+                        message.setChatId(chatId);
+                        message.setText("Ожидайте, ищем для вас музыку");
+                        try {
+                            execute(message);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                        sendAudio(text, chatId);
+                        message.setText("Ура, музыка подъехала!");
+                        try {
+                            execute(message);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        message.setChatId(chatId);
+                        message.setText(text);
+                        try {
+                            execute(message);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
         } else if (update.hasCallbackQuery()) {
             Commands c = new Commands();
             String text;
-            SendMessage msq = new SendMessage();
             SendMessage message = new SendMessage();
             Long chatId = update.getCallbackQuery().getMessage().getChatId();
-            msq.setText(update.getCallbackQuery().getData());
-            msq.setChatId(update.getCallbackQuery().getMessage().getChatId());
+            SendMessage queryMessage = new SendMessage();
+            queryMessage.setText(update.getCallbackQuery().getData());
+            NameOfCommands command = new NameOfCommands();
+            String com = command.getCommand(queryMessage.getText());
 
-            String call = msq.getText();
-            String com = "";
-            switch (call) {
-                case "Гороскоп на день":
-                    com = "/horoscope_of_the_day";
-                    break;
-                case "Карта дня":
-                    com = "/card_of_the_day";
-                    break;
-                case "Карта судьбы":
-                    com = "/card_of_the_destiny";
-                    break;
-                case "Предсказание":
-                    com = "/possibility";
-                    break;
-            }
-            String[] answer = new String[0];
+            ArrayList<String> answer;
             try {
                 answer = c.command(com, status);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
-            text = answer[0];
-            status = answer[1];
-            if (answer.length != 2) {
-                photoName = answer[2];
+            text = answer.get(0);
+            status = answer.get(1);
+            if (answer.toArray().length != 2) {
+                photoName = answer.get(2);
                 try {
-                    ParserForCards.ParseImg(photoName);
+                    PhotoDownloader parserForCards = new PhotoDownloader();
+                    parserForCards.downloadPhoto(photoName);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -192,8 +216,6 @@ public final class TelegramBot extends TelegramLongPollingBot {
                     throw new RuntimeException(e);
                 }
             }
-
         }
     }
 }
-
